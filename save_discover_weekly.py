@@ -20,7 +20,7 @@ class Spotify(spotipy.Spotify):
 
     def create_discover_weekly_playlist(self):
         new_playlist = self.create_playlist(
-            f"{self.start_of_week} discover weekly (ReDiscover Weekly)"
+            f"{self.start_of_week} Re-Discover Weekly"
         )
         self.playlist_replace_items(
             new_playlist["id"],
@@ -59,7 +59,7 @@ class Spotify(spotipy.Spotify):
     def start_of_week(self):
         now = datetime.datetime.now()
         monday = now - datetime.timedelta(days=now.weekday())
-        return monday.strftime("%m/%d/%y")
+        return monday.strftime("%B %d '%y")
 
 
 if __name__ == "__main__":
