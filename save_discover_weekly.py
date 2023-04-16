@@ -19,13 +19,14 @@ class Spotify(spotipy.Spotify):
         )
 
     def create_discover_weekly_playlist(self):
-        new_playlist = self.create_playlist(
-            f"{self.start_of_week} Re-Discover Weekly"
-        )
-        self.playlist_replace_items(
-            new_playlist["id"],
-            [track["track"]["id"] for track in self.discover_weekly_tracks],
-        )
+        if self.discover_weekly_id:
+            new_playlist = self.create_playlist(
+                f"{self.start_of_week} Re-Discover Weekly"
+            )
+            self.playlist_replace_items(
+                new_playlist["id"],
+                [track["track"]["id"] for track in self.discover_weekly_tracks],
+            )
 
     def create_playlist(self, playlist_name):
         try:
@@ -49,7 +50,7 @@ class Spotify(spotipy.Spotify):
         while True:
             playlists = self.current_user_playlists(offset=offset).get("items")
             if not playlists:
-                raise PlaylistNotFoundError("playlist not found")
+                raise PlaylistNotFoundError(f"playlist not found {playlist_name}")
             for playlist in playlists:
                 if playlist["name"] == playlist_name:
                     return playlist
