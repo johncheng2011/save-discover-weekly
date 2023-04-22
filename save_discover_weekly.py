@@ -27,9 +27,11 @@ class Spotify(spotipy.Spotify):
             )
             if self.playlist_name:
                 existing_tracks = self.get_track_ids_from_playlist(new_playlist["id"])
-                new_tracks = list(
-                    self.discover_weekly_tracks.difference(existing_tracks)
-                )
+                new_tracks = [
+                    track_id
+                    for track_id in self.discover_weekly_tracks
+                    if track_id not in existing_tracks
+                ]
                 if new_tracks:
                     self.playlist_add_items(new_playlist["id"], new_tracks)
             else:
@@ -67,19 +69,18 @@ class Spotify(spotipy.Spotify):
             offset += 50
 
     def get_track_ids_from_playlist(self, playlist_id):
-        track_ids = set()
-        
+        track_ids = {}
         offset = 0
         while True:
             tracks = self.playlist_tracks(playlist_id, offset=offset)
             for track in tracks["items"]:
-                track_ids.add(track["track"]["id"])
+                track_ids[track["track"]["id"]] = None
             if tracks["next"] is not None:
                 offset += 100
             else:
                 break
-        
-        return track_ids
+
+        return track_ids.keys()
 
     @property
     def start_of_week(self):
@@ -91,11 +92,9 @@ class Spotify(spotipy.Spotify):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         usage="%(prog)s [PLAYLIST_NAME]",
-        description="Set name of playlist to add to or use default"
+        description="Set name of playlist to add to or use default",
     )
-    parser.add_argument(
-        "-pn", "--playlist_name", default=None
-    )
+    parser.add_argument("-pn", "--playlist_name", default=None)
     args = parser.parse_args()
     spotify = Spotify(args.playlist_name)
     spotify.create_discover_weekly_playlist()
