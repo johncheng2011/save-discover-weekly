@@ -17,9 +17,9 @@ Spotipy relies on the Spotify API. In order to use the Spotify API, you'll need 
 The values for these variables are the ones you created for you App in Step 1
 ```
 Linux or Mac
-export SPOTIPY_CLIENT_ID=client_id_here
-export SPOTIPY_CLIENT_SECRET=client_secret_here
-export SPOTIPY_REDIRECT_URI="eredirect_uri_here"
+export SPOTIPY_CLIENT_ID="client_id_here"
+export SPOTIPY_CLIENT_SECRET="client_secret_here"
+export SPOTIPY_REDIRECT_URI="redirect_uri_here"
 
 # Windows
 $env:SPOTIPY_CLIENT_ID="client_id_here"
