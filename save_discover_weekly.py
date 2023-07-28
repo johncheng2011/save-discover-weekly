@@ -48,7 +48,7 @@ class Spotify(spotipy.Spotify):
                     new_playlist.id,
                     [track_id for track_id in self.discover_weekly_tracks],
                 )
-        
+        raise Exception("Could not find discover weekly playlist")
 
     def create_playlist(self, playlist_name: str) -> Playlist:
         try:
